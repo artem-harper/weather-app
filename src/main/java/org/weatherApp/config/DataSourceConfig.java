@@ -1,7 +1,9 @@
 package org.weatherApp.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@PropertySource("classpath:hibernate.properties")
 @Configuration
 @EnableTransactionManagement
 public class DataSourceConfig {
@@ -30,6 +33,21 @@ public class DataSourceConfig {
         dataSource.setUsername(environment.getRequiredProperty("hibernate.connection.username"));
         dataSource.setPassword(environment.getRequiredProperty("hibernate.connection.password"));
         return dataSource;
+    }
+
+    @Bean
+    public SpringLiquibase liquibase(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource);
+        liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.yaml");
+
+        liquibase.setShouldRun(true);
+
+        liquibase.setContexts("development,production");
+        liquibase.setDefaultSchema("public");
+        liquibase.setDropFirst(false);
+
+        return liquibase;
     }
 
     private Properties hibernateProperties() {
