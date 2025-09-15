@@ -1,11 +1,16 @@
 package org.weatherApp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 @Entity
+@Table(name = "users")
 public class User implements BaseEntity{
 
     @Id

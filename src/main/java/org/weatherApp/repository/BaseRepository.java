@@ -1,7 +1,10 @@
 package org.weatherApp.repository;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.weatherApp.entity.BaseEntity;
 import org.springframework.stereotype.Repository;
@@ -12,25 +15,45 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public class BaseRepository<K extends Serializable, E extends BaseEntity>{
+public abstract class BaseRepository<K extends Serializable, E extends BaseEntity>{
 
-    private final SessionFactory sessionFactory;
+    final SessionFactory sessionFactory;
 
-    public BaseRepository(SessionFactory sessionFactory) {
+    private final Class<E> clazz;
+
+
+    public BaseRepository(SessionFactory sessionFactory, @Autowired(required = false) Class<E> clazz) {
         this.sessionFactory = sessionFactory;
+        this.clazz = clazz;
+    }
+
+    public E save(E entity){
+        Session session = sessionFactory.getCurrentSession();
+
+        session.persist(entity);
+
+        return entity;
     }
 
     public List<E> findAll() {
         Session session = sessionFactory.getCurrentSession();
 
-        return null;
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<E> criteriaQuery = builder.createQuery(clazz);
+        criteriaQuery.select(criteriaQuery.from(clazz));
+
+        return session.createQuery(criteriaQuery).getResultList();
     }
 
     public Optional<E> findById(K id) {
-        return Optional.empty();
+        Session session = sessionFactory.getCurrentSession();
+
+        return Optional.ofNullable(session.find(clazz, id));
     }
 
     public void delete(K id) {
+        Session session = sessionFactory.getCurrentSession();
 
+        session.remove(session.find(clazz, id));
     }
 }

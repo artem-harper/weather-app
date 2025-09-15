@@ -19,24 +19,28 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-4 col-md-6 col-sm-12">
-            <form action="#" class="mt-4">
+            <form th:method="post" th:action="@{/sign-up}" th:object="${registerUserDto}" class="mt-4">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required value=""/>
+                    <input th:field="*{login}" type="text" class="form-control" id="username" name="username" required value=""/>
+                    <div style="color: #FF6B6B" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Username error</div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required value=""/>
+                    <input th:field="*{password}" type="password" class="form-control" id="password" name="password" required value=""/>
+                    <div style="color: #FF6B6B" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Username error</div>
                 </div>
                 <div class="mb-3">
                     <label for="repeat-password" class="form-label">Repeat password</label>
-                    <input type="password" class="form-control" id="repeat-password" name="password" required value=""/>
+                    <input th:field="*{repeatPassword}" type="password" class="form-control" id="repeat-password" name="password" required value=""/>
+                    <div style="color: #FF6B6B" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}">Username error</div>
+
                 </div>
 
                 <input type="hidden" name="redirect_to" value="http://localhost/"/>
 
                 <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
-                <p class="mt-2 text-center">Already have an account? <a href="#">Sign in here</a></p>
+                <p class="mt-2 text-center">Already have an account? <a href="/sign-in">Sign in here</a></p>
             </form>
         </div>
     </div>
