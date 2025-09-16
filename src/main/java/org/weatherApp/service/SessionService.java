@@ -1,14 +1,17 @@
 package org.weatherApp.service;
 
 
+import jakarta.servlet.http.Cookie;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.weatherApp.dto.SessionDto;
 import org.weatherApp.entity.Session;
 import org.weatherApp.entity.User;
+import org.weatherApp.exceptions.SessionNotFoundException;
 import org.weatherApp.repository.SessionRepository;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class SessionService {
@@ -27,7 +30,11 @@ public class SessionService {
 
         Session session = modelMapper.map(sessionDto, Session.class);
 
-
         return modelMapper.map(sessionRepository.save(session), SessionDto.class);
+    }
+
+    public SessionDto findSession(Cookie cookie) {
+        return sessionRepository.findById(UUID.fromString(cookie.getValue()))
+                .map(session -> modelMapper.map(session, SessionDto.class)).orElseThrow(SessionNotFoundException::new);
     }
 }

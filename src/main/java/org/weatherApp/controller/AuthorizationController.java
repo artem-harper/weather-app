@@ -1,5 +1,6 @@
 package org.weatherApp.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,7 @@ public class AuthorizationController {
 
         UUID sessionId = UUID.randomUUID();
 
+        httpServletResponse.addCookie(new Cookie("SESSIONID", sessionId.toString()));
         sessionService.saveSession(SessionDto.builder()
                 .id(sessionId)
                 .userDto(loginUserDtoSaved)
