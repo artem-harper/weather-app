@@ -7,6 +7,7 @@ import org.weatherApp.dto.RegisterUserDto;
 
 @Component
 public class RegistrationUserValidator implements Validator {
+
     @Override
     public boolean supports(Class<?> clazz) {
         return RegisterUserDto.class.equals(clazz);
