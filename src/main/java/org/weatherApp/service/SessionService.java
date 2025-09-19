@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.weatherApp.dto.SessionDto;
 import org.weatherApp.entity.Session;
 import org.weatherApp.entity.User;
+import org.weatherApp.exceptions.SessionExpiredException;
 import org.weatherApp.exceptions.SessionNotFoundException;
 import org.weatherApp.repository.SessionRepository;
 
@@ -33,8 +34,17 @@ public class SessionService {
         return modelMapper.map(sessionRepository.save(session), SessionDto.class);
     }
 
-    public SessionDto findSession(Cookie cookie) {
-        return sessionRepository.findById(UUID.fromString(cookie.getValue()))
+    public SessionDto findSession(String sessionId) {
+        return sessionRepository.findById(UUID.fromString(sessionId))
                 .map(session -> modelMapper.map(session, SessionDto.class)).orElseThrow(SessionNotFoundException::new);
+    }
+
+    public void isSessionExpired(LocalDateTime now, String sessionId){
+
+        LocalDateTime expiresAt = findSession(sessionId).getExpiresAt();
+
+        if (now.isAfter(expiresAt)){
+            throw new SessionExpiredException();
+        }
     }
 }
