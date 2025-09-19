@@ -5,6 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,10 +13,14 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
-import static org.modelmapper.config.Configuration.*;
-
 @Configuration
-@ComponentScan("org.weatherApp")
+@ComponentScan(
+        basePackages = "org.weatherApp",
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = TestConfig.class
+        )
+)
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
@@ -32,7 +37,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

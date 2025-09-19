@@ -42,10 +42,8 @@ public class UserService {
     public void registerUser(RegisterUserDto registerUserDto){
 
         User user = modelMapper.map(registerUserDto, User.class);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        System.out.println();
         if (userRepository.findByLogin(user).isPresent()){
             throw new UserAlreadyExistException();
         }

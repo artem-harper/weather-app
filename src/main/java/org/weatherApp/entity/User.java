@@ -3,6 +3,7 @@ package org.weatherApp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Builder
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
@@ -10,7 +11,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User implements BaseEntity{
 
     @Id
@@ -19,5 +20,5 @@ public class User implements BaseEntity{
 
     private String login;
 
-    private String Password;
+    private String password;
 }
