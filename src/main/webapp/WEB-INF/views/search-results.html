@@ -41,29 +41,26 @@
         <div>
             <h2>Locations:</h2>
             <div class="row">
-                <div class="col-12 col-lg-3 col-md-6 mb-4">
+                <div th:each="cityInfo:${list}" class="col-12 col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">San Francisco</h5>
-                            <p class="card-text mb-1">Latitude: 37.7790262</p>
-                            <p class="card-text mb-1">Longitude: -122.419906</p>
-                            <p class="card-text mb-1">Country: US</p>
-                            <p class="card-text mb-3">State: California</p>
-                            <div class="mt-auto">
-                                <button class="btn btn-primary w-100">Add</button>
-                            </div>
+                            <form>
+                                <h5 class="card-title" th:text="${cityInfo.getName()}">Name</h5>
+                                <p class="card-text mb-1" th:text="'Latitude: ' + ${cityInfo.getLat()}">Latitude</p>
+                                <p class="card-text mb-1" th:text="'Longitude: ' + ${cityInfo.getLon()}">Longitude</p>
+                                <p class="card-text mb-1" th:text="'Country: ' + ${cityInfo.getCountry()}">Country</p>
+                                <p class="card-text mb-3" th:text="'State: ' + ${cityInfo.getState()}">State</p>
+                                <div class="mt-auto">
+                                    <button class="btn btn-primary w-100">Add</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-
             </div>
-</section>
-
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
-    <div class="px-4">
-        <span>© Weather Viewer, project from <a href="https://zhukovsd.github.io/java-backend-learning-course/">zhukovsd/java-backend-learning-course</a> roadmap.</span>
+        </div>
     </div>
-</footer>
+</section>
 
 </body>
 </html>

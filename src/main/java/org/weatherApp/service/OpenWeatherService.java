@@ -2,11 +2,14 @@ package org.weatherApp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.weatherApp.dto.CityInfoDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class OpenWeatherService {
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -20,7 +23,7 @@ public class OpenWeatherService {
         return restTemplate.getForObject(request.formatted(city, citiesLimit, API_KEY), JsonNode.class);
     }
 
-    public List<JsonNode> getWeatherForCity(String city) {
+   /* public List<JsonNode> getWeatherForCity(String city) {
         String request = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s";
         JsonNode jsonNode = getAllPossibleCities(city);
         List<JsonNode> cities = new ArrayList<>();
@@ -30,6 +33,6 @@ public class OpenWeatherService {
         }
 
         return cities;
-    }
+    }*/
 
 }

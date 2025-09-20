@@ -5,15 +5,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.weatherApp.dto.CityInfoDto;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.SessionDto;
-import org.weatherApp.exceptions.SessionExpiredException;
-import org.weatherApp.exceptions.SessionNotFoundException;
 import org.weatherApp.service.LocationService;
 import org.weatherApp.service.SessionService;
-
-import javax.xml.stream.Location;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Controller
@@ -37,15 +35,22 @@ public class WeatherSearchController {
         }
 
         SessionDto sessionDto = sessionService.findSession(sessionId);
-        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
         userDto = sessionDto.getUserDto();
+
+        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
 
         model.addAttribute("user", userDto);
         return "index";
     }
 
     @GetMapping("/search")
-    public String searchPage(@RequestParam("location") String location) {
+    public String searchPage(@CookieValue(value = "SESSIONID", required = false) String sessionId, @RequestParam("location") String location, Model model) {
+
+        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
+
+        List<CityInfoDto> cities = locationService.findCities(location);
+        model.addAttribute("list", cities);
+
 
         return "search-results";
     }
