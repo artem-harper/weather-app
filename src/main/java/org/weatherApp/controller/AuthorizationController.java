@@ -7,15 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
 import org.weatherApp.dto.SessionDto;
-import org.weatherApp.exceptions.InvalidPasswordException;
-import org.weatherApp.exceptions.UserAlreadyExistException;
-import org.weatherApp.exceptions.UserNotFoundException;
 import org.weatherApp.service.SessionService;
 import org.weatherApp.service.UserService;
 import org.weatherApp.util.RegistrationUserValidator;
@@ -50,14 +45,7 @@ public class AuthorizationController {
                            HttpServletResponse httpServletResponse) {
 
         LoginUserDto loginUserDtoSaved;
-
-        try {
-            loginUserDtoSaved = userService.authUser(loginUserDto);
-        } catch (UserNotFoundException | InvalidPasswordException e) {
-            model.addAttribute("error", "1");
-            return "sign-in";
-        }
-
+        loginUserDtoSaved = userService.authUser(loginUserDto);
         UUID sessionId = UUID.randomUUID();
 
         httpServletResponse.addCookie(new Cookie("SESSIONID", sessionId.toString()));
@@ -65,7 +53,6 @@ public class AuthorizationController {
                 .id(sessionId)
                 .userDto(loginUserDtoSaved)
                 .build());
-
 
         return "redirect:/";
     }
@@ -79,15 +66,7 @@ public class AuthorizationController {
         if (bindingResult.hasErrors()) {
             return "sign-up";
         }
-
-        try {
-            userService.registerUser(registerUserDto);
-        } catch (UserAlreadyExistException e) {
-            bindingResult.rejectValue("login", "500", e.getMessage());
-            return "sign-up";
-        }
-
+        userService.registerUser(registerUserDto);
         return "redirect:/sign-in";
     }
-
 }

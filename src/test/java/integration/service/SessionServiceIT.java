@@ -27,9 +27,6 @@ public class SessionServiceIT {
     @Autowired
     private SessionService sessionService;
 
-    @Autowired
-    private SessionRepository sessionRepository;
-
     @Test
     void expiredSessionShouldThrowException(){
         SessionDto sessionDto = SessionDto.builder()
