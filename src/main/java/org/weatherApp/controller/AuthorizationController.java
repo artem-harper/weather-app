@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
 import org.weatherApp.dto.SessionDto;
+import org.weatherApp.dto.UserDto;
 import org.weatherApp.service.SessionService;
 import org.weatherApp.service.UserService;
 import org.weatherApp.util.RegistrationUserValidator;
@@ -44,14 +45,14 @@ public class AuthorizationController {
     public String authUser(@ModelAttribute("loginUserDto") LoginUserDto loginUserDto, Model model,
                            HttpServletResponse httpServletResponse) {
 
-        LoginUserDto loginUserDtoSaved;
-        loginUserDtoSaved = userService.authUser(loginUserDto);
+
+        UserDto loggedUserDto = userService.authUser(loginUserDto);
         UUID sessionId = UUID.randomUUID();
 
         httpServletResponse.addCookie(new Cookie("SESSIONID", sessionId.toString()));
         sessionService.saveSession(SessionDto.builder()
                 .id(sessionId)
-                .userDto(loginUserDtoSaved)
+                .userDto(loggedUserDto)
                 .build());
 
         return "redirect:/";
@@ -67,6 +68,12 @@ public class AuthorizationController {
             return "sign-up";
         }
         userService.registerUser(registerUserDto);
+        return "redirect:/sign-in";
+    }
+
+    @GetMapping("/logout")
+    public String logout(@CookieValue(value = "SESSIONID", required = false) String sessionId){
+        sessionService.deleteSession(sessionId);
         return "redirect:/sign-in";
     }
 }

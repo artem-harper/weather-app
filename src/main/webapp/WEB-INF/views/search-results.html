@@ -16,7 +16,7 @@
             Weather Tracker
         </a>
         <div class="d-flex align-items-center">
-            <span class="navbar-text me-3">zhukovsd</span>
+            <span class="navbar-text me-3" th:text="${user.getLogin()}">Username</span>
             <button class="btn btn-outline-danger">Sign out</button>
         </div>
     </div>
@@ -38,20 +38,37 @@
             </form>
         </div>
 
+
         <div>
             <h2>Locations:</h2>
+
+            <div th:if="${error != null}" div class="row justify-content-center">
+                <div class="col-12 col-lg-4 col-md-6 col-sm-12">
+                    <div class="alert alert-danger" role="alert">
+                        Location already added
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div th:each="cityInfo:${list}" class="col-12 col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <form>
-                                <h5 class="card-title" th:text="${cityInfo.getName()}">Name</h5>
+                            <form th:action="@{/add}" th:method="post">
+                                <input type="hidden" name="name" th:value="${cityInfo.name}">
+                                <input type="hidden" name="latitude" th:value="${cityInfo.getLat()}">
+                                <input type="hidden" name="longitude" th:value="${cityInfo.getLon()}">
+                                <input type="hidden" name="country" th:value="${cityInfo.getCountry()}">
+                                <input type="hidden" name="state" th:value="${cityInfo.getState()}">
+
+                                <h5 class="card-title" th:text="${cityInfo.name}">Name</h5>
                                 <p class="card-text mb-1" th:text="'Latitude: ' + ${cityInfo.getLat()}">Latitude</p>
-                                <p class="card-text mb-1" th:text="'Longitude: ' + ${cityInfo.getLon()}">Longitude</p>
-                                <p class="card-text mb-1" th:text="'Country: ' + ${cityInfo.getCountry()}">Country</p>
+                                <p class="card-text mb-1" th:text="'Longitude: ' + ${cityInfo.getLon()}">
+                                    Longitude</p>
+                                <p class="card-text mb-1" th:text="'Country: ' + ${cityInfo.getCountry()}">
+                                    Country</p>
                                 <p class="card-text mb-3" th:text="'State: ' + ${cityInfo.getState()}">State</p>
                                 <div class="mt-auto">
-                                    <button class="btn btn-primary w-100">Add</button>
+                                    <button type="submit" class="btn btn-primary w-100">Add</button>
                                 </div>
                             </form>
                         </div>

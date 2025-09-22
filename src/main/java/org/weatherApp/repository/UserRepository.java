@@ -8,7 +8,7 @@ import org.weatherApp.entity.User;
 
 import java.util.Optional;
 
-@Transactional
+
 @Repository
 public class UserRepository extends BaseRepository<Integer, User> {
 
@@ -17,6 +17,7 @@ public class UserRepository extends BaseRepository<Integer, User> {
     }
 
     public Optional<User> findByLogin(User user){
+
         Session session = sessionFactory.getCurrentSession();
 
         return session.createQuery("from User u where u.login=:userlogin", User.class)

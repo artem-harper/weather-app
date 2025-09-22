@@ -3,27 +3,28 @@ package org.weatherApp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 
-@Builder
 @EqualsAndHashCode
-@ToString(exclude = "locations")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @Entity
-@Table(name = "USERS")
-public class User implements BaseEntity{
+@Table(name = "locations")
+public class Location implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String login;
+    private String name;
 
-    private String password;
+    @ManyToOne
+    private User user;
 
-    @OneToMany(mappedBy = "user")
-    private List<Location> locations;
+    private BigDecimal latitude;
+
+    private BigDecimal longitude;
 }

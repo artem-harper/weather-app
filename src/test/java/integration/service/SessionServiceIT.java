@@ -1,6 +1,5 @@
 package integration.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.weatherApp.config.TestConfig;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.SessionDto;
+import org.weatherApp.dto.UserDto;
 import org.weatherApp.exceptions.SessionExpiredException;
-import org.weatherApp.repository.SessionRepository;
 import org.weatherApp.service.SessionService;
 
 import java.time.LocalDateTime;
@@ -31,7 +30,7 @@ public class SessionServiceIT {
     void expiredSessionShouldThrowException(){
         SessionDto sessionDto = SessionDto.builder()
                 .id(UUID.randomUUID())
-                .userDto(LoginUserDto.builder()
+                .userDto(UserDto.builder()
                         .id(1)
                         .build())
                 .build();

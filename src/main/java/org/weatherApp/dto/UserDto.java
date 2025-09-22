@@ -2,14 +2,16 @@ package org.weatherApp.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Builder
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginUserDto {
+public class UserDto {
 
+    private Integer id;
     private String login;
-    private String password;
-
+    private List<LocationDto> locationDtoList;
 }

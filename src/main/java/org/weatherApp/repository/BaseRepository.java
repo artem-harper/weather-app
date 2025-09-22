@@ -14,9 +14,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
+
 @Repository
-public abstract class BaseRepository<K extends Serializable, E extends BaseEntity>{
+public abstract class BaseRepository<K extends Serializable, E extends BaseEntity> {
 
     final SessionFactory sessionFactory;
 
@@ -28,15 +28,15 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
         this.clazz = clazz;
     }
 
-    public E save(E entity){
+    public E save(E entity) {
         Session session = sessionFactory.getCurrentSession();
-
         session.persist(entity);
 
         return entity;
     }
 
     public List<E> findAll() {
+
         Session session = sessionFactory.getCurrentSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -47,6 +47,7 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
     }
 
     public Optional<E> findById(K id) {
+
         Session session = sessionFactory.getCurrentSession();
 
         return Optional.ofNullable(session.find(clazz, id));
