@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
-import org.weatherApp.entity.User;
 import org.weatherApp.exceptions.*;
 
 @Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandlerController {
+public class GlobalExceptionHandler {
 
 
 

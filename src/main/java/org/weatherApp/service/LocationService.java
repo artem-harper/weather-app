@@ -61,7 +61,7 @@ public class LocationService {
             WeatherInfoDto weatherInfoDto = WeatherInfoDto.builder()
                     .id(locationDto.getId())
                     .temp(weatherForCity.get("main").get("temp").intValue())
-                    .name(weatherForCity.get("name").asText())
+                    .name(locationDto.getName())
                     .country(weatherForCity.get("sys").get("country").asText())
                     .feelsLike(weatherForCity.get("main").get("feels_like").intValue())
                     .description(weatherForCity.get("weather").get(0).get("description").asText())
