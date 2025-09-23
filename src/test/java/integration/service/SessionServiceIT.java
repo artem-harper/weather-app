@@ -7,10 +7,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.weatherApp.config.TestConfig;
+import org.weatherApp.dto.SessionDto;
+import org.weatherApp.dto.UserDto;
 import org.weatherApp.exceptions.SessionExpiredException;
 import org.weatherApp.repository.SessionRepository;
 import org.weatherApp.service.SessionService;
+
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,6 +30,24 @@ public class SessionServiceIT {
     @Autowired
     private SessionRepository sessionRepository;
 
+    @Test
+    void shouldIncrementSessionsCountWithCreatedSession() {
+
+        int sessionsCountBeforeSavin = sessionRepository.findAll().size();
+        SessionDto sessionDto = SessionDto.builder()
+                .id(UUID.randomUUID())
+                .userDto(UserDto.builder()
+                        .id(1)
+                        .build())
+                .expiresAt(LocalDateTime.now())
+                .build();
+
+        sessionService.saveSession(sessionDto);
+        int sessionsCountAfterSaving = sessionRepository.findAll().size();
+
+        assertThat(sessionsCountAfterSaving - sessionsCountBeforeSavin).isEqualTo(1);
+    }
+
 
     @Test
     void shouldDecrementSessionsCountWithDeletedSession() {
@@ -36,8 +58,9 @@ public class SessionServiceIT {
 
         int sessionsCountAfterDeleting = sessionRepository.findAll().size();
 
-        assertThat(sessionsCountBeforeDeleting-sessionsCountAfterDeleting).isEqualTo(1);
+        assertThat(sessionsCountBeforeDeleting - sessionsCountAfterDeleting).isEqualTo(1);
     }
+
 
     @Test
     void expiredSessionShouldThrowException() {

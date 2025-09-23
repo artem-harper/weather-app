@@ -62,7 +62,6 @@ public class UserServiceIT {
 
             assertThrows(UserAlreadyExistException.class, () -> userService.registerUser(registerUserDto));
         }
-
     }
 
     @Nested
@@ -80,7 +79,7 @@ public class UserServiceIT {
         }
 
         @Test
-        void userWithWrongPasswordsShouldThrowException(){
+        void userWithWrongPasswordsShouldThrowException() {
             LoginUserDto loginUserDto = LoginUserDto.builder()
                     .login("liquibaseUser")
                     .password("wrongPassword")
@@ -88,7 +87,5 @@ public class UserServiceIT {
 
             assertThrows(InvalidPasswordException.class, () -> userService.authUser(loginUserDto));
         }
-
     }
-
 }
