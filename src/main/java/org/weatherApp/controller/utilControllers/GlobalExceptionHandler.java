@@ -1,9 +1,13 @@
-package org.weatherApp.controller;
+package org.weatherApp.controller.utilControllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
@@ -11,9 +15,8 @@ import org.weatherApp.exceptions.*;
 
 @Slf4j
 @ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
-
-
 
     @ExceptionHandler(exception = {UserNotFoundException.class, InvalidPasswordException.class})
     public String authHandleException(Model model) {
@@ -44,4 +47,8 @@ public class GlobalExceptionHandler {
         return "redirect:/search";
     }
 
+    @ExceptionHandler(Exception.class)
+    public String handleAllExceptions() {
+        return "error";
+    }
 }

@@ -60,7 +60,7 @@
                                 Country</h3>
                             <p class="card-text mb-1">Feels like <span
                                     th:text="${weather.getFeelsLike()}">feelsLike</span>°C.
-                                <span th:text="${weather.getDescription()}">Desc</span>
+                                <span th:text="${weather.getDescription().substring(0,1).toUpperCase()+weather.getDescription().substring(1)}">Desc</span>
                             </p>
                             <p class="card-text mb-1" th:text="'Humidity: '+${weather.getHumidity()}+'%'">Humidity</p>
                         </div>

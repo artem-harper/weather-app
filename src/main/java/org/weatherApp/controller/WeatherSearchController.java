@@ -7,12 +7,9 @@ import org.weatherApp.dto.*;
 import org.weatherApp.service.LocationService;
 import org.weatherApp.service.SessionService;
 import org.weatherApp.util.WeatherCodeMap;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-
 
 @Controller
 public class WeatherSearchController {
@@ -27,9 +24,6 @@ public class WeatherSearchController {
 
     @GetMapping()
     public String mainPage(@CookieValue(value = "SESSIONID", required = false) String sessionId, Model model) {
-        if (sessionId == null) {
-            return "redirect:/sign-in";
-        }
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
         sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
@@ -46,10 +40,6 @@ public class WeatherSearchController {
     public String searchPage(@CookieValue(value = "SESSIONID", required = false) String sessionId,
                              @RequestParam(value = "location", required = false) String location,
                              @RequestParam(value = "error", required = false) String error, Model model) {
-
-        if (sessionId == null) {
-            return "redirect:/sign-in";
-        }
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
         sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
@@ -74,10 +64,6 @@ public class WeatherSearchController {
                                @RequestParam("latitude") String latitude,
                                @RequestParam("longitude") String longitude,
                                @CookieValue(value = "SESSIONID", required = false) String sessionId) {
-
-        if (sessionId == null) {
-            return "redirect:/sign-in";
-        }
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
         sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
