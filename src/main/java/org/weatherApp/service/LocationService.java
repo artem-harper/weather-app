@@ -12,34 +12,30 @@ import org.weatherApp.dto.WeatherInfoDto;
 import org.weatherApp.entity.Location;
 import org.weatherApp.exceptions.LocationAlreadyExistException;
 import org.weatherApp.repository.LocationRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 @Service
 public class LocationService {
 
     private final LocationRepository locationRepository;
-    private final OpenWeatherService openWeatherService;
+    private final OpenWeatherAPIService openWeatherAPIService;
     private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
-    private final UserService userService;
 
-    public LocationService(LocationRepository locationRepository, OpenWeatherService openWeatherService, ObjectMapper objectMapper, ModelMapper modelMapper, UserService userService) {
+    public LocationService(LocationRepository locationRepository, OpenWeatherAPIService openWeatherAPIService, ObjectMapper objectMapper, ModelMapper modelMapper, UserService userService) {
         this.locationRepository = locationRepository;
         this.objectMapper = objectMapper;
         this.modelMapper = modelMapper;
-        this.openWeatherService = openWeatherService;
-        this.userService = userService;
+        this.openWeatherAPIService = openWeatherAPIService;
     }
 
     public List<CityInfoDto> findPossibleLocations(String city) {
 
         List<CityInfoDto> cityInfoDtoList = new ArrayList<>();
 
-        JsonNode allPossibleCities = openWeatherService.getAllPossibleCities(city);
+        JsonNode allPossibleCities = openWeatherAPIService.getAllPossibleCities(city);
 
         for (JsonNode element : allPossibleCities) {
             try {
@@ -48,7 +44,6 @@ public class LocationService {
                 throw new RuntimeException(e);
             }
         }
-
         return cityInfoDtoList;
     }
 
@@ -56,7 +51,7 @@ public class LocationService {
         List<WeatherInfoDto> weathers = new ArrayList<>();
 
         for (LocationDto locationDto : locationDtoList) {
-            JsonNode weatherForCity = openWeatherService.getWeatherForCity(locationDto.getLatitude(), locationDto.getLongitude());
+            JsonNode weatherForCity = openWeatherAPIService.getWeatherForCity(locationDto.getLatitude(), locationDto.getLongitude());
 
             WeatherInfoDto weatherInfoDto = WeatherInfoDto.builder()
                     .id(locationDto.getId())
@@ -69,9 +64,7 @@ public class LocationService {
                     .build();
 
             weathers.add(weatherInfoDto);
-
         }
-
         return weathers;
     }
 

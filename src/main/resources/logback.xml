@@ -7,7 +7,6 @@
         </encoder>
     </appender>
 
-
     <logger name="org.weatherApp" level="DEBUG"/>
     <logger name="org.springframework.web" level="INFO"/>
     <logger name="org.hibernate" level="INFO"/>

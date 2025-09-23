@@ -54,17 +54,4 @@ public class UserService {
         }
         userRepository.save(user);
     }
-
-    @Transactional
-    public UserDto findUser(Integer id) {
-
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        userDto.setLocationDtoList(user.getLocations().stream()
-                .map(location -> modelMapper.map(location, LocationDto.class))
-                .toList());
-
-        return userDto;
-
-    }
 }

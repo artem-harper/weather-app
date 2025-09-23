@@ -7,6 +7,7 @@ import org.weatherApp.dto.*;
 import org.weatherApp.service.LocationService;
 import org.weatherApp.service.SessionService;
 import org.weatherApp.util.WeatherCodeMap;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,17 +45,18 @@ public class WeatherSearchController {
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
         sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
 
-        if (location!=null){
-            List<CityInfoDto> cities = locationService.findPossibleLocations(location);
-            model.addAttribute("list", cities);
+        if (location != null) {
+            if (!location.isEmpty()) {
+                List<CityInfoDto> cities = locationService.findPossibleLocations(location);
+                model.addAttribute("list", cities);
+            }
+        }
+
+        if (error != null) {
+            model.addAttribute("error", "Location already added");
         }
 
         model.addAttribute("user", userDto);
-
-        if (error != null) {
-            model.addAttribute("error", "1");
-        }
-
         return "search-results";
     }
 
@@ -82,7 +84,7 @@ public class WeatherSearchController {
 
     @GetMapping("/delete")
     public String deleteWeather(@CookieValue(value = "SESSIONID", required = false) String sessionId,
-                              @RequestParam("id") Integer id){
+                                @RequestParam("id") Integer id) {
 
         locationService.deleteLocation(id);
 

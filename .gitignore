@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 /.idea
 /out
+resources/openweatherapi.properties
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

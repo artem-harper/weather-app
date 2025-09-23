@@ -1,6 +1,6 @@
 package integration.service;
 
-
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
 import org.weatherApp.exceptions.InvalidPasswordException;
 import org.weatherApp.exceptions.UserAlreadyExistException;
+import org.weatherApp.exceptions.UserNotFoundException;
 import org.weatherApp.repository.UserRepository;
 import org.weatherApp.service.UserService;
 
@@ -30,43 +31,64 @@ public class UserServiceIT {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    void shouldIncrementUsersCountWithNewRegisteredUser() {
+    @Nested
+    class RegistrationTest{
+        @Test
+        void shouldIncrementUsersCountWithNewRegisteredUser() {
 
-        int dbUsersBeforeReg = userRepository.findAll().size();
+            int dbUsersCountBeforeReg = userRepository.findAll().size();
 
-        RegisterUserDto registerUserDto = RegisterUserDto.builder()
-                .login("test")
-                .password("testPassword")
-                .repeatPassword("testPassword")
-                .build();
+            RegisterUserDto registerUserDto = RegisterUserDto.builder()
+                    .login("test")
+                    .password("testPassword")
+                    .repeatPassword("testPassword")
+                    .build();
 
-        userService.registerUser(registerUserDto);
+            userService.registerUser(registerUserDto);
 
-        int dbUsersAfterReg = userRepository.findAll().size();
+            int dbUsersCountAfterReg = userRepository.findAll().size();
 
-        assertThat(dbUsersAfterReg-dbUsersBeforeReg).isEqualTo(1);
+            assertThat(dbUsersCountAfterReg-dbUsersCountBeforeReg).isEqualTo(1);
+        }
+
+        @Test
+        void userWithNonUniqueNameShouldThrowException(){
+            RegisterUserDto registerUserDto = RegisterUserDto.builder()
+                    .login("liquibaseUser")
+                    .password("testPassword")
+                    .repeatPassword("testPassword")
+                    .build();
+
+
+            assertThrows(UserAlreadyExistException.class, () -> userService.registerUser(registerUserDto));
+        }
+
     }
 
-    @Test
-    void userWithNonUniqueNameShouldThrowException(){
-        RegisterUserDto registerUserDto = RegisterUserDto.builder()
-                .login("liquibaseUser")
-                .password("testPassword")
-                .repeatPassword("testPassword")
-                .build();
+    @Nested
+    class AuthTest{
+        @Test
+        void notRegisteredUserShouldThrowExceptionOnAuth(){
 
+            LoginUserDto loginUserDto = LoginUserDto.builder()
+                    .login("testNotRegisteredUser")
+                    .password("1234")
+                    .build();
 
-        assertThrows(UserAlreadyExistException.class, () -> userService.registerUser(registerUserDto));
+            assertThrows(UserNotFoundException.class, ()->userService.authUser(loginUserDto));
+
+        }
+
+        @Test
+        void userWithWrongPasswordsShouldThrowException(){
+            LoginUserDto loginUserDto = LoginUserDto.builder()
+                    .login("liquibaseUser")
+                    .password("wrongPassword")
+                    .build();
+
+            assertThrows(InvalidPasswordException.class, () -> userService.authUser(loginUserDto));
+        }
+
     }
 
-    @Test
-    void userWithWrongPasswordsShouldThrowException(){
-        LoginUserDto loginUserDto = LoginUserDto.builder()
-                .login("liquibaseUser")
-                .password("wrongPassword")
-                .build();
-
-        assertThrows(InvalidPasswordException.class, () -> userService.authUser(loginUserDto));
-    }
 }

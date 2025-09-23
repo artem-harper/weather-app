@@ -45,7 +45,7 @@
             <div th:if="${error != null}" class="row justify-content-center">
                 <div class="col-12 col-lg-4 col-md-6 col-sm-12">
                     <div class="alert alert-danger" role="alert">
-                        Location already added.
+                        <p th:text="${error}">Error message</p>
                         <br>
                         <a th:href="@{/}">Go to homepage</a>
                     </div>

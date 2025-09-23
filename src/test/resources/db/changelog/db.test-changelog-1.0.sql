@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
---changeset artem:1
-CREATE TABLE USERS
+--changeset usersTest:1
+create TABLE USERS
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     login VARCHAR(128) NOT NULL UNIQUE,
