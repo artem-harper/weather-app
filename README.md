@@ -13,8 +13,8 @@
 |-----------|------------|
 | **🌱 Backend** | Spring MVC • Spring Core • Spring Context |
 | **💾 Database** | Hibernate ORM • PostgreSQL • Liquibase |
-| **🌤️ Weather API** | OpenWeatherMap / WeatherAPI |
-| **🔧 Tools** | Maven • Tomcat • JSP • Jackson |
+| **🌤️ Weather API** | OpenWeatherAPI |
+| **🔧 Tools** | Maven • Tomcat • Thymeleaf • Jackson |
 
 ## 📋 Предварительные требования
 
