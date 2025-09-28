@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 @Service
-@PropertySource("classpath:openweatherapi.properties")
+@PropertySource("classpath:application.properties")
 public class OpenWeatherAPIService {
 
     private final RestTemplate restTemplate = new RestTemplate();
