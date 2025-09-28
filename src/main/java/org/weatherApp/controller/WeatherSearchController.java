@@ -7,7 +7,6 @@ import org.weatherApp.dto.*;
 import org.weatherApp.service.LocationService;
 import org.weatherApp.service.SessionService;
 import org.weatherApp.util.WeatherCodeMap;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,8 +26,7 @@ public class WeatherSearchController {
     public String mainPage(@CookieValue(value = "SESSIONID", required = false) String sessionId, Model model) {
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
-        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
-
+        sessionService.deleteExpireSession(LocalDateTime.now(), sessionId);
 
         List<WeatherInfoDto> weatherForLocations = locationService.findWeatherForLocations(userDto.getLocationDtoList());
 
@@ -44,7 +42,8 @@ public class WeatherSearchController {
                              @RequestParam(value = "error", required = false) String error, Model model) {
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
-        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
+
+        sessionService.deleteExpireSession(LocalDateTime.now(), sessionId);
 
         if (location != null) {
             if (!location.isEmpty()) {
@@ -69,7 +68,7 @@ public class WeatherSearchController {
                                @CookieValue(value = "SESSIONID", required = false) String sessionId) {
 
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
-        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
+        sessionService.deleteExpireSession(LocalDateTime.now(), sessionId);
 
         LocationDto locationDto = LocationDto.builder()
                 .name(name)
@@ -87,8 +86,7 @@ public class WeatherSearchController {
     public String deleteWeather(@CookieValue(value = "SESSIONID", required = false) String sessionId,
                                 @RequestParam("id") Integer id) {
 
-        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
-
+        sessionService.deleteExpireSession(LocalDateTime.now(), sessionId);
         locationService.deleteLocation(id);
 
         return "redirect:/";

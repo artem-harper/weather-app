@@ -12,12 +12,11 @@ import org.weatherApp.dto.UserDto;
 import org.weatherApp.exceptions.SessionExpiredException;
 import org.weatherApp.repository.SessionRepository;
 import org.weatherApp.service.SessionService;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -62,10 +61,15 @@ public class SessionServiceIT {
     }
 
     @Test
-    void expiredSessionShouldRemove(){
+    void expiredSessionShouldDeleteFromDB(){
 
         int sessionsCountBeforeDeleting = sessionRepository.findAll().size();
 
+        try {
+            sessionService.deleteExpireSession(LocalDateTime.now(), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+        }catch (SessionExpiredException e){
+            System.out.println("Exception caught: "+ e.getMessage());
+        }
 
         int sessionsCountAfterDeleting = sessionRepository.findAll().size();
 
@@ -73,7 +77,7 @@ public class SessionServiceIT {
     }
 
     @Test
-    void expiredSessionShouldThrowException() {
-        assertThrows(SessionExpiredException.class, () -> sessionService.isSessionExpired(LocalDateTime.now(), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"));
+    void whenSessionIsExpiredShouldReturnTrue() {
+        assertTrue(sessionService.isSessionExpired(LocalDateTime.now(), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"));
     }
 }

@@ -46,12 +46,18 @@ public class SessionService {
         return sessionDto;
     }
 
-    @Transactional(noRollbackFor = SessionExpiredException.class)
-    public void isSessionExpired(LocalDateTime now, String sessionId){
-
+    @Transactional()
+    public boolean isSessionExpired(LocalDateTime now, String sessionId){
         LocalDateTime expiresAt = findSession(sessionId).getExpiresAt();
-
         if (now.isAfter(expiresAt)){
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(noRollbackFor = SessionExpiredException.class)
+    public void deleteExpireSession(LocalDateTime now, String sessionId){
+        if (isSessionExpired(now, sessionId)){
             deleteSession(sessionId);
             throw new SessionExpiredException();
         }
