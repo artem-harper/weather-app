@@ -10,7 +10,8 @@ import org.weatherApp.dto.CityInfoDto;
 import org.weatherApp.dto.LocationDto;
 import org.weatherApp.dto.WeatherInfoDto;
 import org.weatherApp.entity.Location;
-import org.weatherApp.exceptions.LocationAlreadyExistException;
+
+import org.weatherApp.exceptions.LocationAlreadyAddedException;
 import org.weatherApp.repository.LocationRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class LocationService {
         List<LocationDto> locationDtoList = locationDto.getUserId().getLocationDtoList();
 
         if (locationDtoList.stream().anyMatch(locationDto1 -> Objects.equals(locationDto1.getLongitude(), locationDto.getLongitude()) && Objects.equals(locationDto1.getLatitude(), locationDto.getLatitude()))){
-            throw new LocationAlreadyExistException();
+            throw new LocationAlreadyAddedException();
         }
 
         Location savedLocation= locationRepository.save(modelMapper.map(locationDto, Location.class));

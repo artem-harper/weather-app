@@ -2,7 +2,6 @@ package integration.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -14,13 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.weatherApp.config.TestConfig;
 import org.weatherApp.dto.CityInfoDto;
-import org.weatherApp.dto.LocationDto;
-import org.weatherApp.dto.WeatherInfoDto;
 import org.weatherApp.service.LocationService;
 import org.weatherApp.service.OpenWeatherAPIService;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

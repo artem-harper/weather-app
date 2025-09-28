@@ -1,21 +1,15 @@
 package org.weatherApp.service;
 
-
-import jakarta.servlet.http.Cookie;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.weatherApp.dto.LocationDto;
 import org.weatherApp.dto.SessionDto;
-import org.weatherApp.entity.Location;
 import org.weatherApp.entity.Session;
-import org.weatherApp.entity.User;
 import org.weatherApp.exceptions.SessionExpiredException;
 import org.weatherApp.exceptions.SessionNotFoundException;
 import org.weatherApp.repository.SessionRepository;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -52,12 +46,13 @@ public class SessionService {
         return sessionDto;
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = SessionExpiredException.class)
     public void isSessionExpired(LocalDateTime now, String sessionId){
 
         LocalDateTime expiresAt = findSession(sessionId).getExpiresAt();
 
         if (now.isAfter(expiresAt)){
+            deleteSession(sessionId);
             throw new SessionExpiredException();
         }
     }

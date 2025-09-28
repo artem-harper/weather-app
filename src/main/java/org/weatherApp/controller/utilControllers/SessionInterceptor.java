@@ -10,13 +10,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Controller
 public class SessionInterceptor implements HandlerInterceptor {
 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("NO SESSION COOKIE FOUND");
-        if (request.getCookies() == null){
+        if (request.getCookies() == null) {
             response.sendRedirect("/sign-in");
             return false;
         }
+
         return true;
     }
 }

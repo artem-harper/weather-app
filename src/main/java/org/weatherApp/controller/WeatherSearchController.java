@@ -29,6 +29,7 @@ public class WeatherSearchController {
         UserDto userDto = sessionService.findSession(sessionId).getUserDto();
         sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
 
+
         List<WeatherInfoDto> weatherForLocations = locationService.findWeatherForLocations(userDto.getLocationDtoList());
 
         model.addAttribute("user", userDto);
@@ -85,6 +86,8 @@ public class WeatherSearchController {
     @GetMapping("/delete")
     public String deleteWeather(@CookieValue(value = "SESSIONID", required = false) String sessionId,
                                 @RequestParam("id") Integer id) {
+
+        sessionService.isSessionExpired(LocalDateTime.now(), sessionId);
 
         locationService.deleteLocation(id);
 

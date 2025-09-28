@@ -61,6 +61,16 @@ public class SessionServiceIT {
         assertThat(sessionsCountBeforeDeleting - sessionsCountAfterDeleting).isEqualTo(1);
     }
 
+    @Test
+    void expiredSessionShouldRemove(){
+
+        int sessionsCountBeforeDeleting = sessionRepository.findAll().size();
+
+
+        int sessionsCountAfterDeleting = sessionRepository.findAll().size();
+
+        assertThat(sessionsCountBeforeDeleting - sessionsCountAfterDeleting).isEqualTo(1);
+    }
 
     @Test
     void expiredSessionShouldThrowException() {

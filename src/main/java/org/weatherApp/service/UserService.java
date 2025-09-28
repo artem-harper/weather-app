@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.weatherApp.dto.LocationDto;
 import org.weatherApp.dto.LoginUserDto;
 import org.weatherApp.dto.RegisterUserDto;
 import org.weatherApp.dto.UserDto;

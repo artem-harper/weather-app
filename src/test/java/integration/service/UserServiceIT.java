@@ -15,10 +15,8 @@ import org.weatherApp.exceptions.UserAlreadyExistException;
 import org.weatherApp.exceptions.UserNotFoundException;
 import org.weatherApp.repository.UserRepository;
 import org.weatherApp.service.UserService;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)

@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
         return "redirect:/sign-in";
     }
 
-    @ExceptionHandler(LocationAlreadyExistException.class)
+    @ExceptionHandler(LocationAlreadyAddedException.class)
     public String locationHandlerException(RedirectAttributes redirectAttributes) {
         log.info("LOCATION ALREADY ADDED");
         redirectAttributes.addAttribute("error", "location_already_added");
